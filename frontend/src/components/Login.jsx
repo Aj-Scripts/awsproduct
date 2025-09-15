@@ -18,7 +18,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:4900/user/login", form2);
+      const res = await axios.post("/api/user/login", form2);
 
       console.log("Form Submitted:", form2);
       alert(res.data.message);

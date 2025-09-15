@@ -8,18 +8,19 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import axiosInstance from '../axiosinterceptor';
+import { Link } from "react-router-dom";
+
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
-  const token=localStorage.getItem('token')
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     fetchProducts();
   }, []);
-  
 
-  // Fetch products
+  
   const fetchProducts = async () => {
     try {
       const res = await axios.get('http://localhost:4900/product/');
@@ -29,25 +30,25 @@ const Home = () => {
     }
   };
 
-  // Delete product
+  
   const deleteProduct = (id) => {
     axiosInstance.delete("http://localhost:4900/product/delete/" + id)
       .then(() => {
         alert("Product deleted");
-        fetchProducts(); // refresh list without reloading page
+        fetchProducts();
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  // Update product (navigate to Add with state)
+  
   const updateProduct = (product) => {
     navigate("/add", { state: { product } });
   };
 
   return (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
       {products.map((productz) => (
         <Card key={productz._id} sx={{ maxWidth: 345, marginTop: 5 }}>
           <CardMedia
@@ -61,18 +62,30 @@ const Home = () => {
               {productz.Product_title}
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {productz.Product_description}
+              {productz.Product_description.length > 60
+                ? productz.Product_description.substring(0, 60) + "..."
+                : productz.Product_description}
             </Typography>
             <Typography variant="subtitle2" sx={{ mt: 1 }}>
               Status: {productz.status}
             </Typography>
           </CardContent>
-          <CardActions>
-            {token && (<>
-            <Button size="small" onClick={() => updateProduct(productz)}>Edit</Button>
-            <Button size="small" color="error" onClick={() => deleteProduct(productz._id)}>Delete</Button></>)}
-            <Button size="small">Learn More</Button>
-          </CardActions>
+         <CardActions>
+  {token && (
+    <>
+      <Button size="small" onClick={() => updateProduct(productz)}>Edit</Button>
+      <Button size="small" color="error" onClick={() => deleteProduct(productz._id)}>Delete</Button>
+    </>
+  )}
+  <Button
+    component={Link}
+    to={`/product/${productz._id}`}
+    size="small"
+  >
+    Learn More
+  </Button>
+</CardActions>
+
         </Card>
       ))}
     </div>
