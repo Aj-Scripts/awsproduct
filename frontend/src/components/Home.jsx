@@ -23,7 +23,7 @@ const Home = () => {
   
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('http://localhost:4900/product/');
+      const res = await axios.get('/api/product/');
       setProducts(res.data);
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -32,7 +32,7 @@ const Home = () => {
 
   
   const deleteProduct = (id) => {
-    axiosInstance.delete("http://localhost:4900/product/delete/" + id)
+    axiosInstance.delete("/product/delete/" + id)
       .then(() => {
         alert("Product deleted");
         fetchProducts();

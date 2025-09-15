@@ -27,7 +27,7 @@ const Add = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (location.state != null) {
-            axiosInstance.put(`http://localhost:4900/product/update/${location.state.product._id}`, form)
+            axiosInstance.put(`/product/update/${location.state.product._id}`, form)
                 .then(() => {
                     alert('Product Updated Successfully');
                     navigate('/');
@@ -37,7 +37,7 @@ const Add = () => {
                     alert("Failed to update product");
                 });
         } else {
-            axiosInstance.post("http://localhost:4900/product/add", form)
+            axiosInstance.post("/product/add", form)
                 .then((res) => {
                     setForm({
                         Product_title: "",
